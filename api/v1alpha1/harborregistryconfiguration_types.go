@@ -29,7 +29,7 @@ type HarborRegistryConfigurationSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of HarborRegistryConfiguration. Edit harborregistryconfiguration_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name string `json:"foo,omitempty"`
 }
 
 // HarborRegistryConfigurationStatus defines the observed state of HarborRegistryConfiguration

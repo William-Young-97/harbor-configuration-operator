@@ -19,12 +19,14 @@ package controllers
 import (
 	"context"
 
+	apiv2 "github.com/mittwald/goharbor-client/v5/apiv2"
+	modelv2 "github.com/mittwald/goharbor-client/v5/apiv2/model"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	harborconfigurationv1alpha1 "github.com/william-young-97/harbor-configuration-operator/api/v1alpha1"
+	v1alpha1 "github.com/william-young-97/harbor-configuration-operator/api/v1alpha1"
 )
 
 // HarborRegistryConfigurationReconciler reconciles a HarborRegistryConfiguration object
@@ -48,8 +50,28 @@ type HarborRegistryConfigurationReconciler struct {
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.11.2/pkg/reconcile
 func (r *HarborRegistryConfigurationReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
+	var harborRegistryConfiguration v1alpha1.HarborRegistryConfiguration
 
-	// TODO(user): your logic here
+	err := r.Get(ctx, req.NamespacedName, &harborRegistryConfiguration)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	client, err := apiv2.NewRESTClientForHost("https://core.harbor.harbor-practice.co.uk/api/v2.0", "admin", "Harbor12345", nil)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	myRegistry := &modelv2.Registry{
+		Name: harborRegistryConfiguration.Spec.Name,
+		Type: "docker-hub",
+		URL:  "https://hub.docker.com",
+	}
+
+	err = client.NewRegistry(ctx, myRegistry)
+	if err != nil {
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
@@ -57,6 +79,6 @@ func (r *HarborRegistryConfigurationReconciler) Reconcile(ctx context.Context, r
 // SetupWithManager sets up the controller with the Manager.
 func (r *HarborRegistryConfigurationReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&harborconfigurationv1alpha1.HarborRegistryConfiguration{}).
+		For(&v1alpha1.HarborRegistryConfiguration{}).
 		Complete(r)
 }
