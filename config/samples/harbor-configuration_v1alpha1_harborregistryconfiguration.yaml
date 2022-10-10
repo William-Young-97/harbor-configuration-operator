@@ -1,0 +1,6 @@
+apiVersion: harbor-configuration.harbor-practice.co.uk/v1alpha1
+kind: HarborRegistryConfiguration
+metadata:
+  name: harborregistryconfiguration-sample
+spec:
+  # TODO(user): Add fields here

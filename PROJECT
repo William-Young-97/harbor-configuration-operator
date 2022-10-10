@@ -1,0 +1,16 @@
+domain: harbor-practice.co.uk
+layout:
+- go.kubebuilder.io/v3
+projectName: harbor-operator-configuration
+repo: github.com/william-young-97/harbor-configuration-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: harbor-practice.co.uk
+  group: harbor-configuration
+  kind: HarborRegistryConfiguration
+  path: github.com/william-young-97/harbor-configuration-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"
