@@ -29,7 +29,9 @@ type HarborRegistryConfigurationSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of HarborRegistryConfiguration. Edit harborregistryconfiguration_types.go to remove/update
-	Name string `json:"foo,omitempty"`
+
+	HarborTarget    HarborTarget    `json:"harborTarget"`
+	RegistryOptions RegistryOptions `json:"registryOptions"`
 }
 
 // HarborRegistryConfigurationStatus defines the observed state of HarborRegistryConfiguration
@@ -61,4 +63,30 @@ type HarborRegistryConfigurationList struct {
 
 func init() {
 	SchemeBuilder.Register(&HarborRegistryConfiguration{}, &HarborRegistryConfigurationList{})
+}
+
+type RegistryOptions struct {
+	Name              string              `json:"name"`
+	Type              string              `json:"type"`
+	TargetRegistryUrl string              `json:"targetRegistryUrl"`
+	Description       string              `json:"description,omitempty"`
+	Credential        *RegistryCredential `json:"credential,omitempty"`
+}
+
+type HarborTarget struct {
+	ApiUrl   string `json:"apiUrl"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type RegistryCredential struct {
+
+	// Access key, e.g. user name when credential type is 'basic'.
+	AccessKey string `json:"access_key,omitempty"`
+
+	// Access secret, e.g. password when credential type is 'basic'.
+	AccessSecret string `json:"access_secret,omitempty"`
+
+	// Credential type, such as 'basic', 'oauth'.
+	Type string `json:"type,omitempty"`
 }

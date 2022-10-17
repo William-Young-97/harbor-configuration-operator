@@ -37,10 +37,51 @@ spec:
             description: HarborRegistryConfigurationSpec defines the desired state
               of HarborRegistryConfiguration
             properties:
-              foo:
-                description: Foo is an example field of HarborRegistryConfiguration.
-                  Edit harborregistryconfiguration_types.go to remove/update
-                type: string
+              harborTarget:
+                properties:
+                  apiUrl:
+                    type: string
+                  password:
+                    type: string
+                  username:
+                    type: string
+                required:
+                - apiUrl
+                - password
+                - username
+                type: object
+              registryOptions:
+                properties:
+                  credential:
+                    properties:
+                      access_key:
+                        description: Access key, e.g. user name when credential type
+                          is 'basic'.
+                        type: string
+                      access_secret:
+                        description: Access secret, e.g. password when credential
+                          type is 'basic'.
+                        type: string
+                      type:
+                        description: Credential type, such as 'basic', 'oauth'.
+                        type: string
+                    type: object
+                  description:
+                    type: string
+                  name:
+                    type: string
+                  targetRegistryUrl:
+                    type: string
+                  type:
+                    type: string
+                required:
+                - name
+                - targetRegistryUrl
+                - type
+                type: object
+            required:
+            - harborTarget
+            - registryOptions
             type: object
           status:
             description: HarborRegistryConfigurationStatus defines the observed state

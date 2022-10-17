@@ -57,15 +57,16 @@ func (r *HarborRegistryConfigurationReconciler) Reconcile(ctx context.Context, r
 		return ctrl.Result{}, err
 	}
 
-	client, err := apiv2.NewRESTClientForHost("https://core.harbor.harbor-practice.co.uk/api/v2.0", "admin", "Harbor12345", nil)
+	client, err := apiv2.NewRESTClientForHost(harborRegistryConfiguration.Spec.HarborTarget.ApiUrl, harborRegistryConfiguration.Spec.HarborTarget.Username, harborRegistryConfiguration.Spec.HarborTarget.Password, nil)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
 
 	myRegistry := &modelv2.Registry{
-		Name: harborRegistryConfiguration.Spec.Name,
-		Type: "docker-hub",
-		URL:  "https://hub.docker.com",
+		Name:        harborRegistryConfiguration.Spec.RegistryOptions.Name,
+		Type:        harborRegistryConfiguration.Spec.RegistryOptions.Type,
+		URL:         harborRegistryConfiguration.Spec.RegistryOptions.TargetRegistryUrl,
+		Description: harborRegistryConfiguration.Spec.RegistryOptions.Description,
 	}
 
 	err = client.NewRegistry(ctx, myRegistry)
