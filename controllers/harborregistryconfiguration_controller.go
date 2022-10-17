@@ -67,6 +67,7 @@ func (r *HarborRegistryConfigurationReconciler) Reconcile(ctx context.Context, r
 		Type:        harborRegistryConfiguration.Spec.RegistryOptions.Type,
 		URL:         harborRegistryConfiguration.Spec.RegistryOptions.TargetRegistryUrl,
 		Description: harborRegistryConfiguration.Spec.RegistryOptions.Description,
+		Credential:  (*modelv2.RegistryCredential)(harborRegistryConfiguration.Spec.RegistryOptions.Credential),
 	}
 
 	err = client.NewRegistry(ctx, myRegistry)
