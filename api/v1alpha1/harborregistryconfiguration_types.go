@@ -36,8 +36,7 @@ type HarborRegistryConfigurationSpec struct {
 
 // HarborRegistryConfigurationStatus defines the observed state of HarborRegistryConfiguration
 type HarborRegistryConfigurationStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Id int64 `json:"id"`
 }
 
 //+kubebuilder:object:root=true

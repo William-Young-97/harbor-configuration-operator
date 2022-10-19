@@ -70,9 +70,16 @@ func (r *HarborRegistryConfigurationReconciler) Reconcile(ctx context.Context, r
 		Credential:  (*modelv2.RegistryCredential)(harborRegistryConfiguration.Spec.RegistryOptions.Credential),
 	}
 
-	err = client.NewRegistry(ctx, myRegistry)
-	if err != nil {
-		return ctrl.Result{}, err
+	if harborRegistryConfiguration.ObjectMeta.DeletionTimestamp.IsZero() {
+		err = client.NewRegistry(ctx, myRegistry)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
+	} else {
+		err = client.DeleteRegistryByID(ctx, harborRegistryConfiguration.Status.Id)
+		if err != nil {
+			return ctrl.Result{}, err
+		}
 	}
 
 	return ctrl.Result{}, nil
